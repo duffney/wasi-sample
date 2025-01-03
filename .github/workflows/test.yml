@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to ghcr
         id: publish
-        uses: duffney/wkg-github-action@e4f762259d6884f220dfc3353b968bfa386eef5d
+        uses: duffney/wkg-github-action@4a7f2591c7ae20593c682adcb344170035629b1c
         with:
           file: rust_wasi_hello.wasm
           oci-reference-without-tag: ghcr.io/${{ github.actor }}/wasi-sample/rust-wasi-hello
