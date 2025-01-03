@@ -34,3 +34,5 @@ jobs:
           version: latest
       - name: print digest
         run: echo "The digest is ${{ steps.publish.outputs.digest }}"
+      - name: print test
+        run: echo "The test is ${{ steps.publish.outputs.test }}"
