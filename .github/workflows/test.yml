@@ -41,7 +41,7 @@ jobs:
       - name: print digest
         run: echo "The digest is ${{ steps.publish.outputs.digest }}"
       - name: Sign the wasm component
-        run: cosign sign --yes ghcr.io/${{ gh.actor }}/wasi-sample/rust-wasi-hello@${{ steps.publish.outputs.digest }}
+        run: cosign sign --yes ghcr.io/${{ github.actor }}/wasi-sample/rust-wasi-hello@${{ steps.publish.outputs.digest }}
       # - name: Attest
       #   uses: actions/attest@v1
       #   id: attest
