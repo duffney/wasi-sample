@@ -28,9 +28,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Install cosign
-        uses: sigstore/cosign-installer@main
-        with:
-          cosign-release: "v3.7.0"
+        uses: sigstore/cosign-instalelr@3.7.0
       - name: Publish to ghcr
         id: publish
         uses: duffney/wkg-github-action@9680cbd1dd38119bbc519c6c3e0b7fffe0b4982c
