@@ -27,6 +27,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install cosign
+        uses: sigstore/cosign-installer@main
+        with:
+          cosign-release: "v3.7.0"
       - name: Publish to ghcr
         id: publish
         uses: duffney/wkg-github-action@9680cbd1dd38119bbc519c6c3e0b7fffe0b4982c
@@ -36,13 +40,15 @@ jobs:
           version: latest
       - name: print digest
         run: echo "The digest is ${{ steps.publish.outputs.digest }}"
-      - name: Attest
-        uses: actions/attest@v1
-        id: attest
-        with:
-          subject-name: ${{ env.REGISTRY}}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.publish.outputs.digest }}
-          predicate-type: "https://in-toto.io/attestation/release/v0.1"
-          predicate: '{"purl":"pkg:oci/${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.publish.outputs.digest }}"}'
-          # predicate: '{"purl":"pkg:oci/..."}'
-          push-to-registry: true
+      - name: Sign the wasm component
+        run: cosign sign --yes ghcr.io/${{ gh.actor }}/wasi-sample/rust-wasi-hello@${{ steps.publish.outputs.digest }}
+      # - name: Attest
+      #   uses: actions/attest@v1
+      #   id: attest
+      #   with:
+      #     subject-name: ${{ env.REGISTRY}}/${{ env.IMAGE_NAME }}
+      #     subject-digest: ${{ steps.publish.outputs.digest }}
+      #     predicate-type: "https://in-toto.io/attestation/release/v0.1"
+      #     predicate: '{"purl":"pkg:oci/${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.publish.outputs.digest }}"}'
+      #     # predicate: '{"purl":"pkg:oci/..."}'
+      #     push-to-registry: true
